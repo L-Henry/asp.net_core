@@ -1,0 +1,62 @@
+﻿@model MovieWeb.Models.MovieDetailsViewModel
+
+<hr />
+
+<strong>Title</strong>
+<p>@Model.Title</p>
+<strong>Description</strong>
+<p>@Model.Description</p>
+<strong>Genre</strong>
+@if (Model.Genre == null)
+{
+    <p>Genre is ongekend</p>
+}
+else
+{
+    <p>@Model.Genre</p>
+}
+
+<strong>Rating</strong>
+<p>@Model.Rating</p>
+<strong>ReleaseDate</strong>
+@if (Model.ReleaseDate.HasValue)
+{
+    <p>@Model.ReleaseDate.Value.ToShortDateString()</p>
+}
+else
+{
+    <p>Release date ongekend.</p>
+}
+
+
+<hr />
+<p>@Model.Title kwam uit in @Model.ReleaseDate</p>
+<p>Het was een @Model.Description in het @Model.Genre genre en kreeg een rating van @Model.Rating</p>
+
+
+
+@if (Model.ReleaseDate.HasValue && CheckRelease(Model))
+{
+    <p>Nog @AantalDagen(Model) dagen tot release.</p>
+}
+else if (Model.ReleaseDate.HasValue)
+{
+    <p>Out now</p>
+}
+else
+{
+    <p>Release datum ongekend.</p>
+}
+
+@functions {
+
+    bool CheckRelease(MovieDetailsViewModel movie)
+    {
+        return movie.ReleaseDate.Value.Date > DateTime.Today.Date;
+    }
+
+    double AantalDagen(MovieDetailsViewModel movie)
+    {
+        return (movie.ReleaseDate.Value.Date - DateTime.Today.Date).Days;
+    }
+}

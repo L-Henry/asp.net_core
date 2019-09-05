@@ -1,0 +1,14 @@
+﻿@model ContactenLijst.Models.ContactAvatarUpdateViewModel
+
+    <img src="@Model.AvaterImage" />
+       
+
+    <form asp-controller="Contact" asp-action="AvatarUpdate" method="post">
+        <div class="form-group">
+            <label asp-for="NewAvatar"></label>
+            <input class="form-control" type="file" asp-for="NewAvatar" />
+            <span class="text-danger" asp-validation-for="NewAvatar"></span>
+        </div>
+        <button class="btn btn-primary" type="submit">Update Avatar</button>
+
+    </form>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MovieWeb.Models.MovieListViewModel>
+
+<hr/>
+<table>
+    <tr>
+        <td style="width:3rem">
+            <strong>Id</strong>
+        </td>
+        <td style="width:10rem">
+            <strong>Title</strong>
+        </td>
+        <td style="width:5rem" />
+        <td style="width:5rem" />
+    </tr>
+    @if (Model.Count() == 0)
+    {
+        <p>Er zijn nog geen films.</p>
+    }
+    else
+    {
+        for (int i = 0; i < Model.Count(); i++)
+        {
+<tr>
+    <td>@Model.ElementAt(i).Id )</td>
+    <td>@Model.ElementAt(i).Title</td>
+    <td><a asp-controller="Movie" asp-action="Details" asp-route-id="@Model.ElementAt(i).Id">Details</a></td>
+    <td><a asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.ElementAt(i).Id">Edit</a></td>
+    <td><a asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.ElementAt(i).Id">Delete</a></td>
+</tr>
+        }
+    }
+
+
+</table>
+
+
+<p><a asp-controller="Movie" asp-action="Create">Create</a></p>
+
+
+
+<img src="~/Images/Good_Will_Hunting.jpg" />
+<img src="~/Images/Inception.jpg" />
+<img src="~/Images/The_Matrix.jpg" />
+
+

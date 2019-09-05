@@ -1,0 +1,33 @@
+﻿@model ContactenLijst.Models.ContactDetailViewModel
+
+<hr />
+
+<strong>Naam</strong>
+<p>@Model.Voornaam @Model.Naam</p>
+<strong>Leeftijd</strong>
+<p>@Leeftijd(Model.Geboortedatum.Value.Date)</p>
+<strong>Geslacht</strong>
+<p>@Model.Geslacht</p>
+<strong>E-mail</strong>
+<p>@Model.Email</p>
+<strong>Telefoon Nummer</strong>
+<p>@Model.TelefoonNr</p>
+<strong>Adres</strong>
+<p>@(Model.Adres != null ? Model.Adres : "Geen adress gekend")</p>
+<strong>Beschrijving</strong>
+<p>@(Model.Beschrijving != null ? Model.Beschrijving : "")</p>
+<strong>Avatar</strong>
+<img src="@Model.AvaterImage" />
+
+<p><a asp-controller="Contact" asp-action="AvatarUpdate" asp-route-id="@Model.Id">Update Avatar</a></p>
+
+@functions {
+
+    int Leeftijd(DateTime datum)
+    {
+        int leeftijd = DateTime.Today.Year - datum.Year;
+        if (datum.Date > DateTime.Today.AddYears(-leeftijd)) leeftijd--;
+        return leeftijd;
+    }
+
+}

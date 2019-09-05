@@ -1,0 +1,40 @@
+﻿@model IEnumerable<ContactenLijst.Models.ContactListViewModel>
+
+<hr />
+<table>
+    <tr>
+        <td style="width:3rem">
+            <strong>Id</strong>
+        </td>
+        <td style="width:10rem">
+            <strong>Naam</strong>
+        </td>
+        <td style="width:5rem" />
+        <td style="width:5rem" />
+    </tr>
+    @if (Model.Count() == 0)
+    {
+        <p>Er zijn geen contacten</p>
+    }
+    else
+    {
+        for (int i = 0; i < Model.Count(); i++)
+        {
+            <tr>
+                <td>@Model.ElementAt(i).Id )</td>
+                <td>@Model.ElementAt(i).Naam</td>
+                <td><a asp-controller="Contact" asp-action="Detail" asp-route-id="@Model.ElementAt(i).Id">Details</a></td>
+                <td><a asp-controller="Contact" asp-action="Update" asp-route-id="@Model.ElementAt(i).Id">Edit</a></td>
+                <td><a asp-controller="Contact" asp-action="Delete" asp-route-id="@Model.ElementAt(i).Id">Delete</a></td>
+            </tr>
+        }
+    }
+
+
+</table>
+
+
+<p><a asp-controller="Contact" asp-action="Create">Create</a></p>
+
+
+

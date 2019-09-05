@@ -1,0 +1,58 @@
+﻿@model ContactenLijst.Models.ContactCreateViewModel
+
+    <form enctype="multipart/form-data" asp-controller="Contact" asp-action="Create" method="post">
+        <div class="form-group">
+            <label asp-for="Voornaam"></label>
+            <input class="form-control" asp-for="Voornaam" />
+            <span class="text-danger" asp-validation-for="Voornaam"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Naam"></label>
+            <input class="form-control" asp-for="Naam" />
+            <span class="text-danger" asp-validation-for="Naam"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Geslacht"></label>
+            <select class="form-control" asp-for="Geslacht">
+                <option>Man</option>
+                <option>Vrouw</option>
+                <option>W</option>
+                <option>X</option>
+            </select>  
+            <span class="text-danger" asp-validation-for="Geslacht"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Geboortedatum"></label>
+            <input class="form-control" type="date" asp-for="Geboortedatum" />
+            <span class="text-danger" asp-validation-for="Geboortedatum"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input class="form-control" type="email" asp-for="Email" />
+            <span class="text-danger" asp-validation-for="Email"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="TelefoonNr"></label>
+            <input class="form-control" asp-for="TelefoonNr" />
+            <span class="text-danger" asp-validation-for="TelefoonNr"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Adres"></label>
+            <input class="form-control" asp-for="Adres" />
+            <span class="text-danger" asp-validation-for="Adres"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Beschrijving"></label>
+            <input class="form-control" type="text" asp-for="Beschrijving" />
+            <span class="text-danger" asp-validation-for="Beschrijving"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Avatar"></label>
+            <input class="form-control" type="file" asp-for="Avatar" />
+            <span class="text-danger" asp-validation-for="Avatar"></span>
+        </div>
+        <button class="btn btn-primary" type="submit">Create contact</button>
+
+    </form>
+
+
