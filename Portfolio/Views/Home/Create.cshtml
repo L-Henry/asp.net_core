@@ -1,0 +1,37 @@
+﻿@model Portfolio.Models.ProjectCreateViewModel
+
+    <form enctype="multipart/form-data" asp-controller="Home" asp-action="Create" method="post">
+        <div class="form-group">
+            <label asp-for="Titel"></label>
+            <input class="form-control" asp-for="Titel" />
+            <span class="text-danger" asp-validation-for="Titel"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Beschrijving"></label>
+            <input class="form-control" asp-for="Beschrijving" />
+            <span class="text-danger" asp-validation-for="Beschrijving"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Status"></label>
+            <select class="form-control" asp-for="Status">
+                <option value="1">Afgewerkt</option>
+                <option value="2">In progress</option>
+                <option value="3">To do</option>
+            </select>
+            <span class="text-danger" asp-validation-for="Status"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Image"></label>
+            <input class="form-control" type="file" asp-for="Image" />
+            <span class="text-danger" asp-validation-for="Image"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Tags"></label>
+            <input class="form-control" asp-for="Tags" />
+            <span class="text-danger" asp-validation-for="Tags"></span>
+        </div>
+        <button class="btn btn-primary" type="submit">Create contact</button>
+
+    </form>
+
+

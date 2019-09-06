@@ -1,26 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
-using MovieWeb.Database;
-using MovieWeb.Domain;
-using MovieWeb.Services;
+using Portfolio.Data;
 
-namespace MovieWeb
+namespace Portfolio
 {
     public class Startup
     {
@@ -41,24 +34,10 @@ namespace MovieWeb
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
-
-            services.AddDbContext<MovieContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()/*.AddRoles<IdentityRole>()*/
-                .AddEntityFrameworkStores<MovieContext>()
-                /*.AddDefaultUI()*/;
-
-
-            services.AddScoped<IScopedService, ScopedService >();
-            services.AddSingleton<ISingletonService, SingletonService>();
-            services.AddTransient<ITransientService, TransientService>();
-            services.AddSingleton<IMovieDatabase, MovieDatabase>();
-
-            services.AddDefaultIdentity<IdentityUser>()/*.AddRoles<IdentityRole>()*/
-                .AddEntityFrameworkStores<MovieContext>()
-                /*.AddDefaultUI()*/;
-
+            services.AddDbContext<ProjectContext>(options =>
+              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddEntityFrameworkStores<ProjectContext>();                ;
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -77,16 +56,7 @@ namespace MovieWeb
             }
 
             app.UseHttpsRedirection();
-
             app.UseStaticFiles();
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                Path.Combine(Directory.GetCurrentDirectory(), "images")),
-                RequestPath = "/images"
-            });
-
             app.UseCookiePolicy();
 
             app.UseAuthentication();
@@ -95,7 +65,7 @@ namespace MovieWeb
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=MovieEF}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

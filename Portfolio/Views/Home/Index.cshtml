@@ -1,0 +1,180 @@
+﻿
+@model IEnumerable<Portfolio.Models.ProjectListViewModel>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+
+<body class="container-fluid">
+    <div class="container topruimte" id="paginatop">
+        <article id="alles page">
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <h1 class="display-4">Ludwig Henry</h1>
+                    <p class="lead">.net developer</p>
+                    <hr class="my-4">
+                    <p>
+                        Ik volg momenteel een cevora opleiding tot .net developer.
+                        <br />Meer over mij:
+                        <br />
+                        <br /><a type="button" class="btn btn-dark" href="#about">About</a>
+                    </p>
+                </div>
+            </div>
+
+            <div id="about" class="topruimte">
+                <h1>Over Ludwig</h1>
+                <p>
+                    Ik volg momenteel een cevora opleiding tot .net developer.
+                    Die opleiding verloopt vlot.
+                    <br />
+                    Buiten deze opleiding vind ik het leuk te vechten.
+                    <br />
+                    Geregeld word ik geplaagd door existentiële vragen. Dit is normaal in een wereld die richting totale vernietiging gaat.
+                </p>
+            </div>
+
+
+
+            <hr />
+            @if (Model.Count() == 0)
+            {
+                <p>Er zijn nog geen projecten</p>
+            }
+            else
+            {
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+
+                    <div class="row projruimte projgroup">
+                        <h1>@Model.ElementAt(i).Titel</h1>
+                        <div class="col-lg-6">
+                            <img src="@Model.ElementAt(i).Image" onclick="imageFull(this)" />
+                        </div>
+                        <div class="col-lg-4 offset-lg-1">
+                            <p>@Model.ElementAt(i).Beschrijving</p>
+                            <p>Dit project is @Model.ElementAt(i).Status .</p>
+                            <a type="button" class="btn btn-dark" asp-controller="Home" asp-action="Project" asp-route-id="@Model.ElementAt(i).Id">Meer info</a>
+                        </div>
+                    </div>
+                    <div class="row projgroup">
+                        <p>
+                            @string.Join(" ", Model.ElementAt(i).Tags.ToArray())
+                        </p>
+                    </div>
+                }
+            }
+
+
+
+
+
+
+
+
+            @*<div id="projecten" class="topruimte">
+
+        <h1>Projecten</h1>
+        <p>Een overzicht van enkele projecten die tot nu tot aan bod gekomen zijn.</p>
+
+        <nav class="navbar navbar-inverse projnavbar projruimte">
+            <div class="navbar-header" id="projnavbar">
+                <div class="btn-group container-fluid">
+
+                    <button class="btn btn-secondary projbutton col-2 offset-2" id="optionconsole" onclick="ToonProject(this, 'consoleproj')">Console</button>
+                    <button class="btn btn-secondary projbutton col-3" id="optioncalc" onclick="ToonProject(this, 'rekenmachineproj')">Rekenmachine</button>
+
+                    <button class="btn btn-secondary projbutton col-3" id="optionaanw" onclick="ToonProject(this, 'aanwproj')">Aanwezigheidslijst</button>
+                    <button class="btn btn-secondary projbutton col-2" id="optionuwp" onclick="ToonProject(this, 'uwpproj')">UWP</button>
+
+                </div>
+            </div>
+        </nav>*@
+
+
+            <div id="contact" class="topruimte">
+                <h1>Contact:</h1>
+                <form class="form-group projruimte" method="post" action="samenvatting" onsubmit="return ValidateForm();">
+                    <label for="voornaam">Voornaam:</label>
+                    <input class="form-control" type="text" id="voornaam" required onchange="ValidateCap(this , 'formVoornaam','Voornaam')" />
+                    <small class="formVoornaam"></small>
+                    <br />
+                    <label for="achternaam">Achternaam:</label>
+                    <input class="form-control" type="text" id="achternaam" required onchange="ValidateCap(this , 'formAchternaam','Achternaam')" />
+                    <small class="formAchternaam"></small>
+                    <br />
+                    <label for="email">Mail:</label>
+                    <input class="form-control" type="email" id="email" required onchange="ValidateMail(this , 'formEmail','Mail adres')" />
+                    <small class="formEmail"></small>
+                    <br />
+                    <label for="tel">Telefoon:</label>
+                    <input type="text" class="form-control" id="tel" required onchange="ValidateTel(this, 'formTel')">
+                    <small class="formTel"></small>
+                    <br />
+                    <label for="datum">Geboortedatum:</label>
+                    <input class="form-control" type="date" id="datum" required onchange="ValidateBirthDate(this , 'formDatum','Datum')" />
+                    <small class="formDatum"></small>
+                    <br />
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Kies geslacht:</label>
+                        </div>
+                        <div class="col-3">
+                            <input class="form-check-input" type="radio" name="geslacht" value="1" id="man" required>
+                            <label class="form-check-label" for="een">Man</label>
+                        </div>
+                        <div class="col-3">
+                            <input class="form-check-input" type="radio" name="geslacht" value="2" id="vrouw">
+                            <label class="form-check-label" for="vrouw">Vrouw</label>
+                        </div>
+                        <div class="col-3">
+                            <input class="form-check-input" type="radio" name="geslacht" value="3" id="ander">
+                            <label class="form-check-label" for="ander">Ander</label>
+                        </div>
+                    </div>
+                    <br />
+                    <div class='form-group row'>
+                        <label for="straat" class="col-2 col-form-label">Adres:</label>
+                        <div class="col-8">
+                            <input class="form-control" type="text" id="straat" placeholder='Straat' required onchange="ValidateCap(this , 'formStraat','Straatnaam')" />
+                            <small class="formStraat"></small>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-control" type="text" id="straatnummer" placeholder="Nummer" required onchange="ValidateNum(this , 'formStraat','Straatnaam')" />
+                        </div>
+                    </div>
+                    <div class='form-group row'>
+                        <div class="col-2 offset-2">
+                            <input class="form-control" type="text" id="postcode" placeholder='Postcode' required onchange="ValidateNum(this , 'formStraat','Straatnaam')" />
+                        </div>
+                        <div class="col-6">
+                            <input class="form-control" type="text" id="gemeente" placeholder="Gemeente" required onchange="ValidateCap(this , 'formGemeente','Naam van gemeente')" />
+                            <small class="formGemeente"></small>
+                        </div>
+                        <div class="col-2">
+                            <select class="form-control" id="land" required>
+                                <option selected value="1">België</option>
+                                <option value="2">Nederland</option>
+                                <option value="3">Luxemburg</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label for="info">Vragen of feedback:</label>
+                        <textarea class="form-control" id="info" rows="3" maxlength="2000" required></textarea>
+                    </div>
+                    <br />
+                    <button id="submitButton" class="btn btn-secondary" type="submit" disabled>Verzend</button>
+                    <button class="btn btn-secondary" type="reset" onclick="Reset()">Reset</button>
+                </form>
+            </div>
+            <div class="projruimte"></div>
+        </article>
+
+
+    </div>
+
+
+
+</body>
+

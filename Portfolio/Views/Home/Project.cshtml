@@ -1,0 +1,31 @@
+﻿@model Portfolio.Models.ProjectDetailsViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<hr />
+
+
+<div class="container" id="paginatop">
+    <article id="alles page">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">@Model.Titel</h1>
+                <hr class="my-4">
+                <p>@Model.Beschrijving</p>
+            </div>
+        </div>
+
+        <img src="@Model.Image" onclick="imageFull(this)" />
+        <div class="projruimte"></div>
+        <div class="row">Tags: @string.Join(" ", Model.Tags.ToArray())</div>
+    </article>
+</div>
+
+
+
+
+
+
+
+
+

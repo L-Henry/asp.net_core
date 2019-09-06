@@ -10,14 +10,11 @@ namespace MovieWeb.Domain
     public class MovieContext : IdentityDbContext
     {
 
-        
-
         public MovieContext(DbContextOptions<MovieContext> options) : base(options)
         {
             
         }
       
-
         public DbSet<Movie> Movies { get; set; }
 
 
@@ -26,10 +23,6 @@ namespace MovieWeb.Domain
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Movie>().ToTable("Movies");
         }
-
-
-
-
 
         public Movie GetMovie(int id)
         {

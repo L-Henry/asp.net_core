@@ -13,7 +13,7 @@ namespace MovieWeb.Controllers
 {
     public class MovieEFController : Controller
     {
-        private MovieContext _context;
+        private readonly MovieContext _context;
         public MovieEFController(MovieContext context)
         {
             _context = context;
@@ -57,8 +57,10 @@ namespace MovieWeb.Controllers
             return View();
         }
 
+
         [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(MovieCreateViewModel model)
         {
             if (!TryValidateModel(model))
