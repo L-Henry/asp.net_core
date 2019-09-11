@@ -1,0 +1,7 @@
+﻿@model Portfolio.Models.ProjectDeleteViewModel
+
+<p>Wil je @Model.Titel echt verwijderen?</p>
+<form asp-controller="Home" asp-action="ConfirmDelete" asp-route-id="@Model.Id" method="post">
+    <button class="btn btn-primary" type="submit">Delete</button>
+</form>
+<a type="button" asp-controller="Home" asp-action="Index">Go back</a>

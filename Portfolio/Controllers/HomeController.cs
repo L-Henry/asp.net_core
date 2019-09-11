@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Portfolio.Data;
 using Portfolio.Domain;
 using Portfolio.Models;
@@ -41,15 +42,73 @@ namespace Portfolio.Controllers
                 });
             }
 
-            return View(projecten);
+            ProjectFilterListViewModel vm = new ProjectFilterListViewModel
+            {
+                Projecten = projecten
+            };
+
+            return View(vm);
         }
 
-        //[Authorize]
-        public IActionResult Create() {
+        [HttpGet]
+        public IActionResult Index(int statusId, string tags)
+        {
+            List<ProjectListViewModel> projecten = new List<ProjectListViewModel>();
+            //IEnumerable<Project> projectenFromDatabase = _context.GetProjecten();
+            string[] tagArray = new string[0];
+            if (!string.IsNullOrEmpty(tags))
+            {
+                tagArray = tags.Split(" ");
+            }
+
+            IQueryable<Project> query = _context.Projecten.Include(x => x.Status)
+                                                          .Include(x=>x.TagProjects).ThenInclude(x=>x.Tag);
+
+            if (statusId == 0 && string.IsNullOrEmpty(tags))
+            {
+                ;
+            }
+            else if (statusId != 0 && string.IsNullOrEmpty(tags))
+            {
+                query = query.Where(x => x.Status.Id == statusId);
+            }
+            else if (!string.IsNullOrEmpty(tags) && statusId == 0)
+            {
+                query = query.Where(p => tagArray.All(x => p.TagProjects.Select(tagP => tagP.Tag).Select(tag => tag.Naam.ToLower()).Contains(x.ToLower())));
+            }
+            else
+            {
+                query = query.Where(p => p.Status.Id == statusId && tagArray.All(t => p.TagProjects.Select(tagP => tagP.Tag).Select(tag => tag.Naam.ToLower()).Contains(t.ToLower())));
+            }
+
+            var projectenFromQuery = query.ToList();
+            foreach (var project in projectenFromQuery)
+            {
+                projecten.Add(new ProjectListViewModel
+                {
+                    Id = project.Id,
+                    Titel = project.Titel,
+                    Beschrijving = project.Beschrijving,
+                    ImageFile = project.Image,
+                    Status = project.Status.Naam,
+                    Tags = project.TagProjects.Select(tagprojects => tagprojects.Tag).Select(tag => tag.Naam).ToList()
+                });
+            }
+
+            ProjectFilterListViewModel vm = new ProjectFilterListViewModel
+            {
+                Projecten = projecten
+            };
+            return View(vm);
+        }
+
+        [Authorize]
+        public IActionResult Create()
+        {
             return View();
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(ProjectCreateViewModel model)
         {
@@ -83,7 +142,8 @@ namespace Portfolio.Controllers
             return RedirectToAction("Project", new { id = project.Id });
         }
 
-        public IActionResult Project(int id) {
+        public IActionResult Project(int id)
+        {
             Project projectFromDb = _context.GetProject(id);
             ProjectDetailsViewModel model = new ProjectDetailsViewModel()
             {
@@ -96,19 +156,22 @@ namespace Portfolio.Controllers
             return View(model);
         }
 
-        public IActionResult Update(int id) {
-            Project projectFromDb = _context.Projecten.SingleOrDefault(p => p.Id == id);
+        [Authorize]
+        public IActionResult Update(int id)
+        {
+            Project projectFromDb = _context.GetProject(id);
             ProjectUpdateViewModel vm = new ProjectUpdateViewModel
             {
                 Titel = projectFromDb.Titel,
                 Beschrijving = projectFromDb.Beschrijving,
                 Status = projectFromDb.Status.Id,
                 Image = projectFromDb.Image,
-                Tags = string.Join(" ",projectFromDb.TagProjects.Select(t => t.Tag).Select(t => t.Naam).ToList())
+                Tags = string.Join(" ", projectFromDb.TagProjects.Select(t => t.Tag).Select(t => t.Naam).ToList())
             };
             return View(vm);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Update(int id, ProjectUpdateViewModel model)
         {
@@ -122,7 +185,7 @@ namespace Portfolio.Controllers
             projectToUpdate.Titel = model.Titel;
             projectToUpdate.Beschrijving = model.Beschrijving;
             projectToUpdate.Status = _context.Status.SingleOrDefault(s => s.Id == model.Status);
-  
+
             using (var memoryStream = new MemoryStream())
             {
                 await model.newImage.CopyToAsync(memoryStream);
@@ -137,11 +200,13 @@ namespace Portfolio.Controllers
 
             _context.AssignTags(newTags, projectToUpdate.Id);
             _context.Update(id, projectToUpdate);
-            
+
             return RedirectToAction("Project", new { id = projectToUpdate.Id });
         }
-        
-        public IActionResult Delete(int id) {
+
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
             Project projectFromDb = _context.GetProject(id);
             ProjectDeleteViewModel model = new ProjectDeleteViewModel()
             {
@@ -151,13 +216,32 @@ namespace Portfolio.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpPost]
-        public IActionResult ConfirmDelete(int id) {
+        public IActionResult ConfirmDelete(int id)
+        {
             _context.Delete(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Beheer");
         }
 
+        [Authorize]
+        public IActionResult Beheer()
+        {
+            List<ProjectListViewModel> projecten = new List<ProjectListViewModel>();
+            IEnumerable<Project> projectenFromDatabase = _context.GetProjecten();
 
+            foreach (var Project in projectenFromDatabase)
+            {
+                projecten.Add(new ProjectListViewModel()
+                {
+                    Id = Project.Id,
+                    Titel = Project.Titel,
+                    Status = Project.Status.Naam
+                });
+            }
+
+            return View(projecten);
+        }
 
 
         public IActionResult Contact()

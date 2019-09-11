@@ -52,25 +52,28 @@ namespace Portfolio.Data
 
         public void AssignTags(List<string> tags, int id)
         {
+            TagProject.RemoveRange(TagProject.Where(t => t.ProjectId == id));
+
             foreach (var tag in tags)
             {
                 if (Tags.Any(t => t.Naam.ToLower() == tag.ToLower().Trim()))
                 {
-                    //TagProject.Add(new TagProject { Tag = Tags.SingleOrDefault(t => t.Naam.ToLower() == tag.ToLower().Trim()), Project = Projecten.SingleOrDefault(p => p.Id == id) });
-                    Projecten
-                        .Include(x => x.TagProjects).ThenInclude(x => x.Tag)
-                        .SingleOrDefault(p => p.Id == id)
-                        .TagProjects.Add(new TagProject { TagId = Tags.SingleOrDefault(t => t.Naam.ToLower() == tag.ToLower().Trim()).Id, ProjectId = Projecten.SingleOrDefault(p => p.Id == id).Id });
+
+                    //Projecten
+                    //    .Include(x => x.TagProjects).ThenInclude(x => x.Tag)
+                    //    .SingleOrDefault(p => p.Id == id)
+                    //    .TagProjects.Add(new TagProject { TagId = Tags.SingleOrDefault(t => t.Naam.ToLower() == tag.ToLower().Trim()).Id, ProjectId = Projecten.SingleOrDefault(p => p.Id == id).Id });
+                    TagProject.Add(new TagProject { TagId = Tags.SingleOrDefault(t => t.Naam.ToLower() == tag.ToLower().Trim()).Id, ProjectId = Projecten.SingleOrDefault(p => p.Id == id).Id });
                 }
                 else
                 {
                     Tag newTag = new Tag { Naam = tag.Trim().ToLower() };
                     Tags.Add(newTag);
-                    Projecten
-                        .Include(x=>x.TagProjects).ThenInclude(x=>x.Tag)
-                        .SingleOrDefault(p => p.Id == id)
-                        .TagProjects.Add(new TagProject { Tag = new Tag { Naam = tag.ToLower().Trim() }, ProjectId = Projecten.SingleOrDefault(p => p.Id == id).Id });
-                    //TagProject.Add(new TagProject { Tag = Tags.SingleOrDefault(t => t.Naam.ToLower() == tag.ToLower().Trim()), Project = Projecten.SingleOrDefault(p => p.Id == id) });
+                    //Projecten
+                    //    .Include(x=>x.TagProjects).ThenInclude(x=>x.Tag)
+                    //    .SingleOrDefault(p => p.Id == id)
+                    //    .TagProjects.Add(new TagProject { Tag = new Tag { Naam = tag.ToLower().Trim() }, ProjectId = Projecten.SingleOrDefault(p => p.Id == id).Id });       
+                    TagProject.Add(new TagProject { Tag = new Tag { Naam = tag.ToLower().Trim() }, ProjectId = Projecten.SingleOrDefault(p => p.Id == id).Id });
                 }
             }
             this.SaveChanges();

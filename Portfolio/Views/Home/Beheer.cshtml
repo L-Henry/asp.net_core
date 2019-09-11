@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Portfolio.Models.ProjectListViewModel>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<hr />
+<table>
+    <tr>
+        <td style="width:5rem">
+            <strong>Id</strong>
+        </td>
+        <td style="width:10rem">
+            <strong>Titel</strong>
+        </td>
+        <td style="width:5rem" />
+        <td style="width:5rem" />
+        <td style="width:5rem" />
+
+    </tr>
+    @if (Model.Count() == 0)
+    {
+        <p>Er zijn nog geen projecten.</p>
+    }
+    else
+    {
+        for (int i = 0; i < Model.Count(); i++)
+        {
+<tr>
+    <td>@Model.ElementAt(i).Id )</td>
+    <td>@Model.ElementAt(i).Titel</td>
+    <td><a asp-controller="Home" asp-action="Project" asp-route-id="@Model.ElementAt(i).Id">Details</a></td>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <td><a asp-controller="Home" asp-action="Update" asp-route-id="@Model.ElementAt(i).Id">Update</a></td>
+        <td><a asp-controller="Home" asp-action="Delete" asp-route-id="@Model.ElementAt(i).Id">Delete</a></td>
+    }
+    <td>@Model.ElementAt(i).Status</td>
+</tr>
+        }
+    }
+
+
+</table>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <p><a asp-controller="Home" asp-action="Create">Create</a></p>
+}
+
