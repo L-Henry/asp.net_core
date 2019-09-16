@@ -1,0 +1,18 @@
+﻿@model MovieWatcher.Models.RatingReviewViewModel
+
+<form asp-controller="Home" asp-action="RatingReview" asp-route-id="@Model.Id" method="post">
+    <div class="form-group">
+        <label asp-for="Rating">Uw rating:</label>
+        <select asp-for="Rating" asp-items="Model.RatingSelectList"></select>
+        <span class="text-danger" asp-validation-for="Rating"></span>
+    </div>
+
+    <div class="form-group">
+        <div class="form-group">
+            <label asp-for="Review"></label>
+            <input class="form-control" asp-for="Review" />
+            <span class="text-danger" asp-validation-for="Review"></span>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Save</button>
+</form>

@@ -1,0 +1,71 @@
+﻿@model MovieWatcher.Models.MovieDetailViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<hr />
+
+<strong>Title</strong>
+<p>@Model.Titel</p>
+<strong>Genre</strong>
+<p>Genres: @string.Join(", ", Model.Genres)</p>
+<p>Mensen die deze film gezien hebben: @Model.AantalGezien</p>
+<p>Mensen die deze film willen zien: @Model.AantalWilZien</p>
+
+@if (SignInManager.IsSignedIn(User))
+{
+
+    <form id="postFrm" asp-controller="Home" asp-action="MovieDetail" method="post">
+        <div class="form-group">
+            <label asp-for="HeeftGezien">Uw gezien status: </label>
+            <select onchange="HeeftGezienChanged()" asp-for="HeeftGezien" asp-items="Model.HeeftGezienSelectList"></select>
+            <span class="text-danger" asp-validation-for="HeeftGezien"></span>
+        </div>
+
+
+        <p>Average rating: @Model.Rating</p>
+
+        <div class="form-group">
+            <div class="form-group">
+                <label asp-for="EigenRating">Uw rating: </label>
+                <select onchange="EigenRatingChanged()" asp-for="EigenRating" asp-items="Model.EigenRatingSelectList"></select>
+                <span class="text-danger" asp-validation-for="EigenRating"></span>
+            </div>
+        </div>
+    </form>
+
+    <a asp-controller="Home" asp-action="RatingReview" asp-route-movieId="@Model.Id">Voeg review toe</a>
+}
+else
+{
+    <p>Average rating: @Model.Rating</p>
+}
+
+
+
+
+@foreach (var rr in Model.RatingReview)
+{
+    @if (!string.IsNullOrEmpty(rr.Review))
+    {
+<div class="reviewBorder">
+    <p> @rr.UserName</p>
+    <p> @rr.Rating</p>
+    <p >@rr.Review</p>
+</div>
+    }
+}
+
+
+
+
+
+<script type="text/javascript">
+
+    function HeeftGezienChanged() {
+        document.getElementById("postFrm").submit();
+    }
+
+    function EigenRatingChanged() {
+        document.getElementById("postFrm").submit();
+    }
+</script>

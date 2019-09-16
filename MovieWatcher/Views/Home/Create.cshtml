@@ -1,0 +1,33 @@
+﻿@model MovieWatcher.Models.MovieCreateViewModel
+
+    <form enctype="multipart/form-data" asp-controller="Home" asp-action="Create" method="post">
+        <div class="form-group">
+            <label asp-for="Titel"></label>
+            <input class="form-control" asp-for="Titel" />
+            <span class="text-danger" asp-validation-for="Titel"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Speeltijd"></label>
+            <input class="form-control" asp-for="Speeltijd" />
+            <span class="text-danger" asp-validation-for="Speeltijd"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Foto"></label>
+            <input class="form-control" type="file" asp-for="Foto" />
+            <span class="text-danger" asp-validation-for="Foto"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="GenreList"></label>
+            @for (int i = 0; i < Model.GenreList.Count; i++)
+			{
+                <input type="checkbox" class="form-control" asp-for="GenreList[i].Checked"/>@Model.GenreList[i].Naam
+                <input type="hidden" asp-for="@Model.GenreList[i].Naam" />
+            }
+            <span class="text-danger" asp-validation-for="GenreList"></span>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Create movie</button>
+
+    </form>
+
+

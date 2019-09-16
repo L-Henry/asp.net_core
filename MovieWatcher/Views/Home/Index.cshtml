@@ -1,0 +1,82 @@
+﻿@model MovieWatcher.Models.MoviesFilterListViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<hr />
+<table>
+    <tr>
+        <td style="width:3rem">
+            <strong>Id</strong>
+        </td>
+        <td style="width:10rem">
+            <strong>Title</strong>
+        </td>
+        <td style="width:10rem">
+            <strong>Rating</strong>
+        </td>
+        <td style="width:10rem">
+            <strong>Aantal gezien</strong>
+        </td>
+        <td style="width:10rem">
+            <strong>Heeft gezien</strong>
+        </td>
+        <td style="width:5rem" />
+        <td style="width:5rem" />
+    </tr>
+    @if (Model.Movies.Count() == 0)
+    {
+        <p>Er zijn nog geen films.</p>
+    }
+    else
+    {
+        for (int i = 0; i < Model.Movies.Count(); i++)
+        {
+<tr>
+    <td>@Model.Movies.ElementAt(i).Id )</td>
+    <td>@Model.Movies.ElementAt(i).Titel</td>
+    @if (@Model.Movies.ElementAt(i).Rating != -1)
+    {
+        <td>@Model.Movies.ElementAt(i).Rating</td>
+    }
+    else
+    {
+        <td>Nog geen rating</td>
+    }
+    <td>@Model.Movies.ElementAt(i).AantalGezien</td>
+    @if (@Model.Movies.ElementAt(i).HeeftGezien == 1)
+    {
+        <td>Onekend</td>
+    }
+    else if (@Model.Movies.ElementAt(i).HeeftGezien == 2)
+    {
+        <td>Gezien</td>
+    }
+    else if (@Model.Movies.ElementAt(i).HeeftGezien == 3)
+    {
+        <td>Wil zien</td>
+    }
+    else
+    {
+        <td>Log in</td>
+    }
+
+    <td><a asp-controller="Home" asp-action="MovieDetail" asp-route-id="@Model.Movies.ElementAt(i).Id">Details</a></td>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <td><a asp-controller="Home" asp-action="Update" asp-route-id="@Model.Movies.ElementAt(i).Id">Edit</a></td>
+        <td><a asp-controller="Home" asp-action="Delete" asp-route-id="@Model.Movies.ElementAt(i).Id">Delete</a></td>
+    }
+</tr>
+        }
+    }
+
+
+</table>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <p><a asp-controller="Home" asp-action="Create">Create</a></p>
+}
+
+
+
