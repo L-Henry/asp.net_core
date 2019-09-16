@@ -1,0 +1,55 @@
+﻿@model FoodShare.Models.RestaurantListFilterViewModel
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<hr />
+<table>
+    <tr>
+        <td style="width:10rem">
+            <strong>Naam</strong>
+        </td>
+        <td style="width:20rem">
+            <strong>Aantal keer bij besteld</strong>
+        </td>
+        <td style="width:10rem">
+            <strong>Gemiddelde prijs</strong>
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+    @if (Model.Restaurants.Count() == 0)
+    {
+        <p>Er zijn nog geen restaurants.</p>
+        }
+        else
+        {
+            //public bool ReedsVanBesteld { get; set; }
+
+
+
+            for (int i = 0; i < Model.Restaurants.Count(); i++)
+            {
+            <tr>
+                <td>@Model.Restaurants.ElementAt(i).Naam)</td>
+                <td>@Model.Restaurants.ElementAt(i).AantalKeerBijBesteld</td>
+                <td>@Model.Restaurants.ElementAt(i).GemiddeldePrijs</td>
+                    <td><a asp-controller="Home" asp-action="RestaurantDetail" asp-route-id="@Model.Restaurants.ElementAt(i).Id">Details</a></td>
+                @if (SignInManager.IsSignedIn(User))
+                    {
+                    <td><a asp-controller="Home" asp-action="Edit" asp-route-id="@Model.Restaurants.ElementAt(i).Id">Edit</a></td>
+                }
+            </tr>
+            }
+    }
+
+
+</table>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <p><a asp-controller="Home" asp-action="RestaurantCreate">Create</a></p>
+}
+
+
+

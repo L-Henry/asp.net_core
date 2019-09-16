@@ -1,0 +1,13 @@
+﻿@model FoodShare.Models.RestaurantTypeCreateViewModel
+
+
+<form enctype="multipart/form-data" asp-controller="RestaurantType" asp-action="RestaurantTypeCreate" method="post">
+    <div class="form-group">
+        <label asp-for="Naam"></label>
+        <input class="form-control" asp-for="Naam" />
+        <span class="text-danger" asp-validation-for="Naam"></span>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Create type</button>
+
+</form>

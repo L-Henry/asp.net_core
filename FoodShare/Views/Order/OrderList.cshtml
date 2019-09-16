@@ -1,0 +1,46 @@
+﻿@model FoodShare.Models.OrderListFilterViewModel
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<hr />
+<table>
+    <tr>
+        <td style="width:5rem">
+            <strong>Id</strong>
+        </td>
+        <td style="width:15rem">
+            <strong>Type</strong>
+        </td>
+
+        <td></td>
+    </tr>
+    @if (Model.Orders.Count() == 0)
+    {
+        <p>Er zijn nog geen restauranttypes.</p>
+    }
+    else
+    {
+        for (int i = 0; i < Model.Orders.Count(); i++)
+        {
+            <tr>
+                <td>@Model.Orders.ElementAt(i).Id)</td>
+                <td>@Model.Orders.ElementAt(i).Restaurant</td>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <td><a asp-controller="RestaurantType" asp-action="RestaurantTypeEdit" asp-route-id="@Model.Orders.ElementAt(i).Id">Edit</a></td>
+                }
+            </tr>
+        }
+    }
+
+
+</table>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <p><a asp-controller="RestaurantType" asp-action="RestaurantTypeCreate">Create</a></p>
+}
+
+
+

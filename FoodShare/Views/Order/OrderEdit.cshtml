@@ -1,0 +1,46 @@
+﻿@model FoodShare.Models.OrderEditViewModel
+
+@{
+    ViewData["Title"] = "OrderEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>OrderEdit</h2>
+
+<h4>OrderEditViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="OrderEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Leveringskost" class="control-label"></label>
+                <input asp-for="Leveringskost" class="form-control" />
+                <span asp-validation-for="Leveringskost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BestelDatum" class="control-label"></label>
+                <input asp-for="BestelDatum" class="form-control" />
+                <span asp-validation-for="BestelDatum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsGefinaliseerd" /> @Html.DisplayNameFor(model => model.IsGefinaliseerd)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

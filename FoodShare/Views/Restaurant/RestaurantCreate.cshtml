@@ -1,0 +1,22 @@
+﻿@model FoodShare.Models.RestaurantCreateViewModel
+
+
+
+    <form enctype="multipart/form-data" asp-controller="Restaurant" asp-action="RestaurantCreate" method="post">
+        <div class="form-group">
+            <label asp-for="Naam"></label>
+            <input class="form-control" asp-for="Naam" />
+            <span class="text-danger" asp-validation-for="Naam"></span>
+        </div>
+        <div class="form-group">
+            <div class="form-group">
+                <label asp-for="TypeId">Uw rating: </label>
+                <select onchange="EigenRatingChanged()" asp-for="TypeId" asp-items="Model.TypeList"></select>
+                <span class="text-danger" asp-validation-for="TypeId"></span>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Create movie</button>
+
+    </form>
+
