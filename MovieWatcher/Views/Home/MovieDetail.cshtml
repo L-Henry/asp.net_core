@@ -14,7 +14,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
 
-    <form id="postFrm" asp-controller="Home" asp-action="MovieDetail" method="post">
+    <form id="postForm" asp-controller="Home" asp-action="MovieDetail" method="post">
         <div class="form-group">
             <label asp-for="HeeftGezien">Uw gezien status: </label>
             <select onchange="HeeftGezienChanged()" asp-for="HeeftGezien" asp-items="Model.HeeftGezienSelectList"></select>
